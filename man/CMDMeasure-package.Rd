@@ -37,7 +37,7 @@ implemented as permutation tests.
 
 \author{
 Ze Jin \email{zj58@cornell.edu},
-  Shun Yao \email{shunyao2@illinois.edu},
+  Shun Yao \email{shunyao2@illinois.edu}, \cr
   Xiaofeng Shao \email{xshao@illinois.edu},
   David S. Matteson \email{matteson@cornell.edu}
 }
