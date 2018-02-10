@@ -2,11 +2,17 @@ context("cmdm")
 
 # random pairwise univariate
 num_obs <- 10
-dim_comp <- c(1, 1)
-num_dim <- sum(dim_comp)
-X <- matrix(rnorm(num_obs * num_dim), num_obs, num_dim)
+num_comp <- 5
+X <- matrix(rnorm(num_obs * num_comp), num_obs, num_comp)
 
-test_that("dcov vs. asym_dcov/sym_dcov univariate", {
+test_that("univariate Y", {
+  Y <- rnorm(num_obs)
 
-  expect_equal(1, 1)
+  expect_equal(MDD(X, Y), MDD2(X, Y)$stat)
+})
+
+test_that("multivariate Y", {
+  Y <- matrix(rnorm(num_obs * num_comp), num_obs, num_comp)
+
+  expect_equal(MDD(X, Y), MDD2(X, Y)$stat)
 })

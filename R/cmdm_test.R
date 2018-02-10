@@ -32,16 +32,21 @@
 #' MDD(X, Y)
 
 MDD2 <- function(x, y) {
+  x <- as.matrix(x)
+  y <- as.matrix(y)
+  
   n <- nrow(x)
   p <- ncol(x)
+  q <- ncol(y)
 
   out <- .C("MDD_U",
             N = as.integer(n),
             P = as.integer(p),
+            Q = as.integer(q),
             X = as.double(x),
             Y = as.double(y),
-            Q = as.double(numeric(1)),
+            O = as.double(numeric(1)),
             PACKAGE = "CMDMeasure")
   
-  return(list(Q = out$Q))
+  return(list(stat = out$O))
 }

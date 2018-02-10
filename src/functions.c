@@ -7,10 +7,10 @@
 
 void U_center_X(int n, int p, double *X, double *XX);
 void D_center_X(int n, int p, double *X, double *XX);
-void U_center_Y(int n, double *Y, double *YY);
-void D_center_Y(int n, double *Y, double *YY);
+void U_center_Y(int n, int q, double *Y, double *YY);
+void D_center_Y(int n, int q, double *Y, double *YY);
 double inner_U(int n, double *XX, double *YY);
-double inner_D(int n, double *XX, double *YY, double *M);
+double inner_D(int n, double *XX, double *YY);
 double inner_U_boot(int n, double *W, double *M);
 double inner_D_boot(int n, double *W, double *M);
 
@@ -36,21 +36,21 @@ void U_center_X(int n, int p, double *X, double *XX) {
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
       if (i != j) {
-  a = 0;
+        a = 0;
 
         //XX[i, j] = |X[i, ] - X[j, ]|
-  for (k = 0; k < p; ++k) {
+        for (k = 0; k < p; ++k) {
           temp = X[i + k * n] - X[j + k * n];
-    a += temp * temp;
-  }
+          a += temp * temp;
+        }
 
-  a = sqrt(a);
+        a = sqrt(a);
 
-  XX[i + j * n] = a;
-  row_sum[i] += a;
-  col_sum[j] += a;
-  total_sum += a;
-      } 
+        XX[i + j * n] = a;
+        row_sum[i] += a;
+        col_sum[j] += a;
+        total_sum += a;
+      }
     }
   }
 
@@ -58,8 +58,8 @@ void U_center_X(int n, int p, double *X, double *XX) {
     for (i = 0; i < n; ++i) {
       //diag(XX) = 0
       if (i != j) {
-  XX[i + j * n] = XX[i + j * n] - row_sum[i] / (n - 2) - col_sum[j] / (n - 2) + total_sum / (n - 1) / (n - 2);
-      } 
+        XX[i + j * n] = XX[i + j * n] - row_sum[i] / (n - 2) - col_sum[j] / (n - 2) + total_sum / (n - 1) / (n - 2);
+      }
     }
   }
 
@@ -97,7 +97,7 @@ void D_center_X(int n, int p, double *X, double *XX) {
         row_sum[i] += a;
         col_sum[j] += a;
         total_sum += a;
-      } 
+      }
     }
   }
 
@@ -109,7 +109,7 @@ void D_center_X(int n, int p, double *X, double *XX) {
 
 }
 
-void U_center_Y(int n, double *Y, double *YY) {
+void U_center_Y(int n, int q, double *Y, double *YY) {
   double row_sum[n];
   memset(row_sum, 0, n * sizeof(double));
 
@@ -122,20 +122,29 @@ void U_center_Y(int n, double *Y, double *YY) {
 
   int i;
   int j;
+  int k;
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
       if (i != j) {
-        //YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2
-        temp = Y[i] - Y[j];
-  b = 0.5 * temp * temp; 
-  //YY[i, j] = -Y[i, ]^T * Y[j, ]
+        b = 0;
 
-  YY[i + j * n] = b;
-  row_sum[i] += b;
-  col_sum[j] += b;
-  total_sum += b;
-      } 
+        //temp = Y[i] - Y[j];
+        //b = 0.5 * temp * temp;
+        //YY[i, j] = -Y[i, ]^T * Y[j, ]
+        //YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2
+        for (k = 0; k < q; ++k) {
+          temp = Y[i + k * n] - Y[j + k * n];
+          b += temp * temp;
+        }
+
+        b = 0.5 * b;
+
+        YY[i + j * n] = b;
+        row_sum[i] += b;
+        col_sum[j] += b;
+        total_sum += b;
+      }
     }
   }
 
@@ -143,14 +152,14 @@ void U_center_Y(int n, double *Y, double *YY) {
     for (i = 0; i < n; ++i) {
       //diag(YY) = 0
       if (i != j) {
-  YY[i + j * n] = YY[i + j * n] - row_sum[i] / (n - 2) - col_sum[j] / (n - 2) + total_sum / (n - 1) / (n - 2);
-      } 
+        YY[i + j * n] = YY[i + j * n] - row_sum[i] / (n - 2) - col_sum[j] / (n - 2) + total_sum / (n - 1) / (n - 2);
+      }
     }
   }
 
 }
 
-void D_center_Y(int n, double *Y, double *YY) {
+void D_center_Y(int n, int q, double *Y, double *YY) {
   double row_sum[n];
   memset(row_sum, 0, n * sizeof(double));
 
@@ -163,20 +172,29 @@ void D_center_Y(int n, double *Y, double *YY) {
 
   int i;
   int j;
+  int k;
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
       if (i != j) {
+        b = 0;
+
         //YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2
-        temp = Y[i] - Y[j];
-        b = 0.5 * temp * temp; 
+        //temp = Y[i] - Y[j];
+        //b = 0.5 * temp * temp;
         //YY[i, j] = -Y[i, ]^T * Y[j, ]
+        for (k = 0; k < q; ++k) {
+          temp = Y[i + k * n] - Y[j + k * n];
+          b += temp * temp;
+        }
+
+        b = 0.5 * b;
 
         YY[i + j * n] = b;
         row_sum[i] += b;
         col_sum[j] += b;
         total_sum += b;
-      } 
+      }
     }
   }
 
@@ -189,7 +207,7 @@ void D_center_Y(int n, double *Y, double *YY) {
 }
 
 /*double inner_U(int n, double *XX, double *YY, double *M) {
-  double sum = 0; 
+  double sum = 0;
   double temp;
 
   int i;
@@ -211,7 +229,7 @@ void D_center_Y(int n, double *Y, double *YY) {
 }*/
 
 double inner_U(int n, double *XX, double *YY) {
-  double sum = 0; 
+  double sum = 0;
   double temp;
 
   int i;
@@ -232,8 +250,8 @@ double inner_U(int n, double *XX, double *YY) {
   return sum / n / (n - 3);
 }
 
-double inner_D(int n, double *XX, double *YY, double *M) {
-  double sum = 0; 
+double inner_D(int n, double *XX, double *YY) {
+  double sum = 0;
   double temp;
 
   int i;
@@ -243,7 +261,7 @@ double inner_D(int n, double *XX, double *YY, double *M) {
     for (i = 0; i < n; ++i) {
       //M[i, j] = XX[i, j] * YY[i, j]
       temp = XX[i + j * n] * YY[i + j * n];
-      M[i + j * n] = temp;
+      //M[i + j * n] = temp;
       sum += temp;
     }
   }
@@ -252,7 +270,7 @@ double inner_D(int n, double *XX, double *YY, double *M) {
 }
 
 double inner_U_boot(int n, double *W, double *M) {
-  double sum = 0; 
+  double sum = 0;
 
   int i;
   int j;
@@ -271,7 +289,7 @@ double inner_U_boot(int n, double *W, double *M) {
 }
 
 double inner_D_boot(int n, double *W, double *M) {
-  double sum = 0; 
+  double sum = 0;
 
   int i;
   int j;
