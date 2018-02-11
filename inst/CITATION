@@ -1,15 +1,12 @@
 citHeader("To cite CMDMeasure in publications use:")
 
-citEntry(entry = "Article",
+citEntry(entry = "Manual",
   title        = "CMDMeasure: Conditional Mean Dependence Measures via Energy Statistics",
   author       = personList(as.person("Ze Jin"),
                    as.person("Shun Yao"),
                    as.person("Xiaofeng Shao"),
                    as.person("David S. Matteson")),
-  journal      = "R package version",
   year         = "2018",
-  volume       = "1",
-  number       = "0",
   note         = "R package version 1.0.",
 
   textVersion  =
