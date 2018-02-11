@@ -77,7 +77,7 @@ cmdm_test <- function(X, Y, Z, num_perm = 500, type = "linmdd", compute = "C", c
   r <- ncol(Z)
 
   if (type == "linmdd") {
-  	V <- Y - lm(Y ~ Z)$"fitted.values"
+  	V <- Y - lm(Y ~ Z - 1)$"fitted.values"
   	U <- cbind(X, Z)
   	cmdm_sample <- mdd(U, V, compute = compute, center = center)
   } else if (type == "pmdd") {
@@ -91,15 +91,15 @@ cmdm_test <- function(X, Y, Z, num_perm = 500, type = "linmdd", compute = "C", c
   	index <- sample(n)
 
   	if (type == "linmdd") {
-	  U_perm <- cbind(X[index, ], Z)
-	  cmdm_perm <- mdd(U_perm, V, compute = compute, center = center)
-	} else if (type == "pmdd") {
-	  cmdm_perm <- pmdd(X[index, ], Y, Z)
-	}
+  	  U_perm <- cbind(X[index, ], Z)
+  	  cmdm_perm <- mdd(U_perm, V, compute = compute, center = center)
+  	} else if (type == "pmdd") {
+  	  cmdm_perm <- pmdd(X[index, ], Y, Z)
+  	}
 
-	if (cmdm_perm >= cmdm_sample) {
-	  count <- count + 1
-	}
+  	if (cmdm_perm >= cmdm_sample) {
+  	  count <- count + 1
+  	}
   }
 
   return(list(stat = cmdm_sample, pval = count / num_perm))
