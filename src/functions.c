@@ -5,20 +5,20 @@
 ///// declarations
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void U_center_X(int n, int p, double *X, double *XX);
-void D_center_X(int n, int p, double *X, double *XX);
-void U_center_Y(int n, int q, double *Y, double *YY);
-void D_center_Y(int n, int q, double *Y, double *YY);
-double inner_U(int n, double *XX, double *YY);
-double inner_D(int n, double *XX, double *YY);
-double inner_U_boot(int n, double *W, double *M);
-double inner_D_boot(int n, double *W, double *M);
+void UCenter_X(int n, int p, double *X, double *XX);
+void DCenter_X(int n, int p, double *X, double *XX);
+void UCenter_Y(int n, int q, double *Y, double *YY);
+void DCenter_Y(int n, int q, double *Y, double *YY);
+double inner_UCenter(int n, double *XX, double *YY);
+double inner_DCenter(int n, double *XX, double *YY);
+double inner_UCenter_boot(int n, double *W, double *M);
+double inner_DCenter_boot(int n, double *W, double *M);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void U_center_X(int n, int p, double *X, double *XX) {
+void UCenter_X(int n, int p, double *X, double *XX) {
   double row_sum[n];
   memset(row_sum, 0, n * sizeof(double));
 
@@ -38,7 +38,7 @@ void U_center_X(int n, int p, double *X, double *XX) {
       if (i != j) {
         a = 0;
 
-        //XX[i, j] = |X[i, ] - X[j, ]|
+        // XX[i, j] = |X[i, ] - X[j, ]|
         for (k = 0; k < p; ++k) {
           temp = X[i + k * n] - X[j + k * n];
           a += temp * temp;
@@ -56,7 +56,7 @@ void U_center_X(int n, int p, double *X, double *XX) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //diag(XX) = 0
+      // diag(XX) = 0
       if (i != j) {
         XX[i + j * n] = XX[i + j * n] - row_sum[i] / (n - 2) - col_sum[j] / (n - 2) + total_sum / (n - 1) / (n - 2);
       }
@@ -65,7 +65,7 @@ void U_center_X(int n, int p, double *X, double *XX) {
 
 }
 
-void D_center_X(int n, int p, double *X, double *XX) {
+void DCenter_X(int n, int p, double *X, double *XX) {
   double row_sum[n];
   memset(row_sum, 0, n * sizeof(double));
 
@@ -85,7 +85,7 @@ void D_center_X(int n, int p, double *X, double *XX) {
       if (i != j) {
         a = 0;
 
-        //XX[i, j] = |X[i, ] - X[j, ]|
+        // XX[i, j] = |X[i, ] - X[j, ]|
         for (k = 0; k < p; ++k) {
           temp = X[i + k * n] - X[j + k * n];
           a += temp * temp;
@@ -109,7 +109,7 @@ void D_center_X(int n, int p, double *X, double *XX) {
 
 }
 
-void U_center_Y(int n, int q, double *Y, double *YY) {
+void UCenter_Y(int n, int q, double *Y, double *YY) {
   double row_sum[n];
   memset(row_sum, 0, n * sizeof(double));
 
@@ -129,10 +129,7 @@ void U_center_Y(int n, int q, double *Y, double *YY) {
       if (i != j) {
         b = 0;
 
-        //temp = Y[i] - Y[j];
-        //b = 0.5 * temp * temp;
-        //YY[i, j] = -Y[i, ]^T * Y[j, ]
-        //YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2
+        // YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2 or YY[i, j] = -Y[i, ]^T * Y[j, ]
         for (k = 0; k < q; ++k) {
           temp = Y[i + k * n] - Y[j + k * n];
           b += temp * temp;
@@ -150,7 +147,7 @@ void U_center_Y(int n, int q, double *Y, double *YY) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //diag(YY) = 0
+      // diag(YY) = 0
       if (i != j) {
         YY[i + j * n] = YY[i + j * n] - row_sum[i] / (n - 2) - col_sum[j] / (n - 2) + total_sum / (n - 1) / (n - 2);
       }
@@ -159,7 +156,7 @@ void U_center_Y(int n, int q, double *Y, double *YY) {
 
 }
 
-void D_center_Y(int n, int q, double *Y, double *YY) {
+void DCenter_Y(int n, int q, double *Y, double *YY) {
   double row_sum[n];
   memset(row_sum, 0, n * sizeof(double));
 
@@ -179,10 +176,7 @@ void D_center_Y(int n, int q, double *Y, double *YY) {
       if (i != j) {
         b = 0;
 
-        //YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2
-        //temp = Y[i] - Y[j];
-        //b = 0.5 * temp * temp;
-        //YY[i, j] = -Y[i, ]^T * Y[j, ]
+        // YY[i, j] = 0.5 * |Y[i, ] - Y[j, ]|^2 or YY[i, j] = -Y[i, ]^T * Y[j, ]
         for (k = 0; k < q; ++k) {
           temp = Y[i + k * n] - Y[j + k * n];
           b += temp * temp;
@@ -206,7 +200,7 @@ void D_center_Y(int n, int q, double *Y, double *YY) {
 
 }
 
-/*double inner_U(int n, double *XX, double *YY, double *M) {
+/*double inner_UCenter(int n, double *XX, double *YY, double *M) {
   double sum = 0;
   double temp;
 
@@ -215,9 +209,9 @@ void D_center_Y(int n, int q, double *Y, double *YY) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //diag(M) = 0
+      // diag(M) = 0
       if (i != j) {
-        //M[i, j] = XX[i, j] * YY[i, j]
+        // M[i, j] = XX[i, j] * YY[i, j]
         temp = XX[i + j * n] * YY[i + j * n];
         M[i + j * n] = temp;
         sum += temp;
@@ -228,7 +222,7 @@ void D_center_Y(int n, int q, double *Y, double *YY) {
   return sum / n / (n - 3);
 }*/
 
-double inner_U(int n, double *XX, double *YY) {
+double inner_UCenter(int n, double *XX, double *YY) {
   double sum = 0;
   double temp;
 
@@ -237,11 +231,11 @@ double inner_U(int n, double *XX, double *YY) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //diag(M) = 0
+      // diag(M) = 0
       if (i != j) {
-        //M[i, j] = XX[i, j] * YY[i, j]
+        // M[i, j] = XX[i, j] * YY[i, j]
         temp = XX[i + j * n] * YY[i + j * n];
-        //M[i + j * n] = temp;
+        // M[i + j * n] = temp;
         sum += temp;
       }
     }
@@ -250,7 +244,7 @@ double inner_U(int n, double *XX, double *YY) {
   return sum / n / (n - 3);
 }
 
-double inner_D(int n, double *XX, double *YY) {
+double inner_DCenter(int n, double *XX, double *YY) {
   double sum = 0;
   double temp;
 
@@ -259,9 +253,9 @@ double inner_D(int n, double *XX, double *YY) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //M[i, j] = XX[i, j] * YY[i, j]
+      // M[i, j] = XX[i, j] * YY[i, j]
       temp = XX[i + j * n] * YY[i + j * n];
-      //M[i + j * n] = temp;
+      // M[i + j * n] = temp;
       sum += temp;
     }
   }
@@ -269,7 +263,7 @@ double inner_D(int n, double *XX, double *YY) {
   return sum / n / n;
 }
 
-double inner_U_boot(int n, double *W, double *M) {
+double inner_UCenter_boot(int n, double *W, double *M) {
   double sum = 0;
 
   int i;
@@ -277,9 +271,9 @@ double inner_U_boot(int n, double *W, double *M) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //diag(M) = 0
+      // diag(M) = 0
       if (i != j) {
-        //W[i] * M[i, j] * W[j]
+        // W[i] * M[i, j] * W[j]
         sum += W[i] * M[i + j * n] * W[j];
       }
     }
@@ -288,7 +282,7 @@ double inner_U_boot(int n, double *W, double *M) {
   return sum / n / (n - 3);
 }
 
-double inner_D_boot(int n, double *W, double *M) {
+double inner_DCenter_boot(int n, double *W, double *M) {
   double sum = 0;
 
   int i;
@@ -296,7 +290,7 @@ double inner_D_boot(int n, double *W, double *M) {
 
   for (j = 0; j < n; ++j) {
     for (i = 0; i < n; ++i) {
-      //W[i] * M[i, j] * W[j]
+      // W[i] * M[i, j] * W[j]
       sum += W[i] * M[i + j * n] * W[j];
     }
   }

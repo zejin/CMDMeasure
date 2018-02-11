@@ -8,12 +8,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* .C calls */
-extern void MDD_U(int *N, int *P, int *Q, double *X, double *Y, double *O);
-extern void MDD_D(int *N, int *P, int *Q, double *X, double *Y, double *O);
+extern void MDD_UCenter(int *N, int *P, int *Q, double *X, double *Y, double *O);
+extern void MDD_DCenter(int *N, int *P, int *Q, double *X, double *Y, double *O);
 
 static const R_CMethodDef CEntries[] = {
-  {"MDD_U", (DL_FUNC) &MDD_U, 6},
-  {"MDD_D", (DL_FUNC) &MDD_D, 6},
+  {"MDD_UCenter", (DL_FUNC) &MDD_UCenter, 6},
+  {"MDD_DCenter", (DL_FUNC) &MDD_DCenter, 6},
   {NULL, NULL, 0}
 };
 

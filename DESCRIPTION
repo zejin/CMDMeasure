@@ -22,5 +22,8 @@ RoxygenNote: 6.0.1
 Collate: 
     'CMDMeasure-package.R'
     'functions.R'
-    'cmdm.R'
+    'pmdd.R'
+    'mdd.R'
     'cmdm_test.R'
+    'mdc.R'
+    'pmdc.R'
