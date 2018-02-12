@@ -1,4 +1,4 @@
-#' CMDMeasure: A package for mutual dependence measures via energy statistics
+#' CMDMeasure: A package for conditional mean dependence measures via energy statistics
 #'
 #' The CMDMeasure package provides measures of conditional mean dependence and tests of conditional mean 
 #' independence. 
