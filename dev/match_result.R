@@ -1,37 +1,69 @@
 #
 set.seed(12345)
 X <- matrix(rnorm(10 * 3), 10, 3)
+Y <- rnorm(10)
+Z <- matrix(rnorm(10 * 3), 10, 3)
 
 #
-mdm(X, type = "asym_dcov")
-mdm(X, type = "sym_dcov")
-mdm(X, type = "comp")
-mdm(X, type = "comp_simp")
-mdm(X, type = "asym_comp")
-mdm(X, type = "asym_comp_simp")
-mdm(X, type = "sym_comp")
-mdm(X, type = "sym_comp_simp")
+mdd(X, Y, compute = "C", center = "U")
+mdd(X, Y, compute = "R", center = "U")
 
-# cd mmi/simulation/real_data/ff_5_year
-source('dCov.R')
+mdd(X, Y, compute = "C", center = "D")
+mdd(X, Y, compute = "R", center = "D")
+
+mdc(X, Y, center = "U")
+mdc(X, Y, center = "D")
+
+pmdd(X, Y, Z)
+pmdc(X, Y, Z)
+
+# cd cmi/simulation/ff/ff5_year
 set.seed(12345)
 X <- matrix(rnorm(10 * 3), 10, 3)
-num_obs <- nrow(X)
-dim_comp <- c(1, 1, 1)
-num_dim <- sum(dim_comp)
-num_comp <- length(dim_comp)
-index_comp <- cumsum(c(1, dim_comp)) # start index and end index
-X <- c(t(X))
-D <- rep(0, num_comp * num_obs * num_obs)
+Y <- rnorm(10)
+Z <- matrix(rnorm(10 * 3), 10, 3)
 
 #
-dCov_asymmetric(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-dCov_symmetric(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-est_complete(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-est_complete_simple(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-est_asymmetric(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-est_asymmetric_simple(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-est_symmetric(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
-est_symmetric_simple(X, D, 0, num_obs, num_dim, num_comp, index_comp - 1)$Q
+dyn.load("MDD.so")
 
+MDD <- function(N, P, U, V, Q) {
+  if (!(is.numeric(N) && is.numeric(P) && is.numeric(U) && is.numeric(V) &&
+        is.numeric(Q)))
+    stop("arguments must be numeric")
+  out <- .C("MDD_U",
+            N=as.integer(N),
+            P=as.integer(P),
+            X=as.double(U),
+            Y=as.double(V),
+            Q=as.double(Q))
+  return(list(Q = out$Q))
+}
+
+MDD(10, 3, X, Y, 0)$Q
+
+MDD <- function(N, P, U, V, M, Q) {
+  if (!(is.numeric(N) && is.numeric(P) && is.numeric(U) && is.numeric(V) &&
+        is.numeric(M) && is.numeric(Q)))
+    stop("arguments must be numeric")
+  out <- .C("MDD_D",
+            N=as.integer(N),
+            P=as.integer(P),
+            X=as.double(U),
+            Y=as.double(V),
+            M=as.double(M),
+            Q=as.double(Q))
+  return(list(Q = out$Q))
+}
+
+MDD(10, 3, X, Y, matrix(0, 10, 10), 0)$Q
+
+#
+source('MDD.R')
+
+MDD(X, Y)
+
+MDC(X, Y)
+
+pMDD(X, Y, Z)
+pMDC(X, Y, Z)
 

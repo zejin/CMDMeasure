@@ -12,7 +12,7 @@
 #' @references Park, T., Shao, X., and Yao, S. (2015).
 #'   Partial martingale difference correlation.
 #'   Electronic Journal of Statistics, 9(1), 1492-1517.
-#'   \url{http://dx.doi.org/10.1214/15-EJS1047}.    
+#'   \url{http://dx.doi.org/10.1214/15-EJS1047}.
 #'
 #' @importFrom stats dist
 #'
@@ -50,7 +50,7 @@ pmdc <- function(X, Y, Z) {
   beta <- u.inner(B, C) / u.inner(C, C)
   proj <- B - beta * C
   pmdd <- u.inner(proj, D)
-  pmdc <- pmdd / sqrt(u.inner(proj, proj) * u.inner(A, A))
+  pmdc <- pmdd / sqrt(u.inner(proj, proj) * u.inner(D, D))
   # pmdc <- (mdc(W, Y) - mdc(Z, Y) * r.star(Z, W)) / sqrt(1 - mdc(Z, Y)^2)
 
   return(pmdc)
