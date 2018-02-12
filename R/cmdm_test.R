@@ -11,7 +11,7 @@
 #'   of mutual dependence measures.
 #' @param type The type of conditional mean dependence measures, including
 #' \itemize{
-#'   \item \code{linmdd}: martingale difference divergence under a linear model assumption; 
+#'   \item \code{linmdd}: martingale difference divergence under a linear assumption; 
 #'   \item \code{pmdd}: partial martingale difference divergence.
 #' }
 #' @param compute The computation method for martingale difference divergence, including
@@ -88,13 +88,13 @@ cmdm_test <- function(X, Y, Z, num_perm = 500, type = "linmdd", compute = "C", c
 
   count <- 0
   for (i in 1:num_perm) {  
-  	index <- sample(n)
+  	index_perm <- sample(n)
 
   	if (type == "linmdd") {
-  	  U_perm <- cbind(X[index, ], Z)
+  	  U_perm <- cbind(X[index_perm, ], Z)
   	  cmdm_perm <- mdd(U_perm, V, compute = compute, center = center)
   	} else if (type == "pmdd") {
-  	  cmdm_perm <- pmdd(X[index, ], Y, Z)
+  	  cmdm_perm <- pmdd(X[index_perm, ], Y, Z)
   	}
 
   	if (cmdm_perm >= cmdm_sample) {

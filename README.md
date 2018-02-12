@@ -13,16 +13,19 @@ The two main parts are:
 ## Measuring conditional mean dependence
 
 The conditional mean dependence measures include:
-- asymmetric measure based on distance covariance
-- symmetric measure based on distance covariance
-- complete measure based on complete V-statistics
-- simplified complete measure based on incomplete V-statistics
-- asymmetric measure based on complete measure
-- simplified asymmetric measure based on simplified complete measure
-- symmetric measure based on complete measure
-- simplified symmetric measure based on simplified complete measure
+- conditional mean dependence of Y given X
+  - martingale difference divergence
+  - martingale difference correlation
+- conditional mean dependence of Y given X conditioning on Z
+  - partial martingale difference divergence
+  - partial martingale difference correlation
 
 ## Testing conditional mean independence
+
+The conditional mean independence tests include:
+- conditional mean independence of Y given X conditioning on Z
+  - martingale difference divergence under a linear assumption
+  - partial martingale difference divergence
 
 The conditional mean independence tests based on the conditional mean dependence measures are implemented as permutation tests.
 

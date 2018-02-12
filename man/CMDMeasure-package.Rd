@@ -15,22 +15,32 @@ independence.
 \section{Measuring conditional mean dependence}{
 
 The conditional mean dependence measures include: 
-\itemize{
-  \item asymmetric measure \eqn{\mathcal{R}_n} based on distance covariance \eqn{\mathcal{V}_n}
-  \item symmetric measure \eqn{\mathcal{S}_n} based on distance covariance \eqn{\mathcal{V}_n}
-  \item complete measure \eqn{\mathcal{Q}_n} based on complete V-statistics
-  \item simplified complete measure \eqn{\mathcal{Q}_n^\star} based on incomplete V-statistics
-  \item asymmetric measure \eqn{\mathcal{J}_n} based on complete measure \eqn{\mathcal{Q}_n}
-  \item simplified asymmetric measure \eqn{\mathcal{J}_n^\star} based on simplified complete measure 
-    \eqn{\mathcal{Q}_n^\star}
-  \item symmetric measure \eqn{\mathcal{I}_n} based on complete measure \eqn{\mathcal{Q}_n}
-  \item simplified symmetric measure \eqn{\mathcal{I}_n^\star} based on simplified complete measure 
-    \eqn{\mathcal{Q}_n^\star}
+\itemize{ 
+  \item conditional mean dependence of \code{Y} given \code{X}
+  \itemize{
+    \item martingale difference divergence
+    \item martingale difference correlation
+  }
+}
+\itemize{  
+  \item conditional mean dependence of \code{Y} given \code{X} conditioning on \code{Z}
+  \itemize{
+    \item partial martingale difference divergence
+    \item partial martingale difference correlation
+  }
 }
 }
 
 \section{Testing conditional mean independence}{
 
+The conditional mean independence tests include: 
+\itemize{  
+  \item conditional mean independence of \code{Y} given \code{X} conditioning on \code{Z}
+  \itemize{
+    \item martingale difference divergence under a linear assumption
+    \item partial martingale difference divergence
+  }
+}
 The conditional mean independence tests based on the conditional mean dependence measures are 
 implemented as permutation tests.
 }

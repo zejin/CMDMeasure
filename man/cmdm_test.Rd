@@ -19,7 +19,7 @@ of mutual dependence measures.}
 
 \item{type}{The type of conditional mean dependence measures, including
 \itemize{
-  \item \code{linmdd}: martingale difference divergence under a linear model assumption; 
+  \item \code{linmdd}: martingale difference divergence under a linear assumption; 
   \item \code{pmdd}: partial martingale difference divergence.
 }}
 

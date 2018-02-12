@@ -14,10 +14,10 @@ u.center <- function(X) {
   
   R <- rowSums(A)
   C <- colSums(A)
-  T <- sum(A)
+  S <- sum(A)
   r <- matrix(rep(R, n), n, n) / (n - 2)
   c <- t(matrix(rep(C, n), n, n)) / (n - 2)
-  t <- matrix(T / (n - 1) / (n - 2), n, n)
+  t <- matrix(S / (n - 1) / (n - 2), n, n)
   UA <- A - r - c + t
   diag(UA) <- 0
 
@@ -48,10 +48,10 @@ d.center <- function(X) {
 
   R <- rowSums(A)
   C <- colSums(A)
-  T <- sum(A)
+  S <- sum(A)
   r <- matrix(rep(R, n), n, n) / n
   c <- t(matrix(rep(C, n), n, n)) / n
-  t <- matrix(T / n^2, n, n)
+  t <- matrix(S / n^2, n, n)
   DA <- A - r - c + t
 
   return(DA)
