@@ -6,7 +6,7 @@
 \alias{CMDMeasure}
 \title{Conditional Mean Dependence Measures via Energy Statistics}
 \description{
-CMDMeasure: A package for mutual dependence measures via energy statistics
+CMDMeasure: A package for conditional mean dependence measures via energy statistics
 }
 \details{
 The CMDMeasure package provides measures of conditional mean dependence and tests of conditional mean 
